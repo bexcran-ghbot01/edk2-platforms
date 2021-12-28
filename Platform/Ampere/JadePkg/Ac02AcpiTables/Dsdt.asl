@@ -17,8 +17,6 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x02, "Ampere", "Jade", 1) {
 
   Scope(\_SB) {
 
-    Include ("CPU.asi")
-    Include ("PMU.asi")
     Include ("CommonDevices.asi")
 
     Scope(\_SB.GED0) {
@@ -532,5 +530,8 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x02, "Ampere", "Jade", 1) {
     Include ("PCI-S0.asi")
     Include ("PCI-S1.asi")
     Include ("PCI-PDRC.asi")
+
+    Include ("CPU.asi")
+    Include ("PMU.asi")
   }
 } // DSDT
