@@ -17,6 +17,7 @@
 #include <Library/PcdLib.h>
 #include <Library/PeimEntryPoint.h>
 #include <Library/ResetSystemLib.h>
+#include <Library/AmpereCpuLib.h>
 
 #define UUID_SIZE     PcdGetSize (PcdPlatformConfigUuid)
 
