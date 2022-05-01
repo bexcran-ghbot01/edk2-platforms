@@ -39,6 +39,7 @@ FlashPeiEntryPoint (
 {
   CHAR8                 BuildUuid[UUID_SIZE];
   CHAR8                 StoredUuid[UUID_SIZE];
+  CHAR8                 NullUuid[PcdGetSize (PcdPlatformConfigUuid)];
   EFI_STATUS            Status;
   IPMI_BOOT_FLAGS_INFO  BootFlags;
   BOOLEAN               NeedToClearUserConfiguration;
@@ -149,12 +150,17 @@ FlashPeiEntryPoint (
       return Status;
     }
 
-    Status = NVParamClrAll ();
-    if (!EFI_ERROR (Status)) {
-      //
-      // Trigger reset to use default NVPARAM
-      //
-      ResetCold ();
+    for (int i=0; i<sizeof(NullUuid); i++) {
+      NullUuid[i] = 0xff;
+    }
+    if (CompareMem ((VOID *)StoredUuid, (VOID *)NullUuid, sizeof (NullUuid)) != 0) {
+      Status = NVParamClrAll ();
+      if (!EFI_ERROR (Status)) {
+        //
+        // Trigger reset to use default NVPARAM
+        //
+        ResetCold ();
+      }
     }
   } else {
     DEBUG ((DEBUG_INFO, "Identical UUID, copy stored NVRAM to RAM\n"));
