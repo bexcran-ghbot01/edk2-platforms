@@ -54,3 +54,6 @@
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultDataBits
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultParity
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultStopBits
+
+  gAmpereTokenSpaceGuid.PcdSerial3RegisterBase
+  gAmpereTokenSpaceGuid.PcdSerial3UartBaudRate
