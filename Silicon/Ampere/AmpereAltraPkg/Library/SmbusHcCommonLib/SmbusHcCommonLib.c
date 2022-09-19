@@ -181,7 +181,8 @@ SmbusHcCommonExecute (
                   WriteTemp,
                   1,
                   ReadTemp,
-                  (UINT32 *)&DataLen
+                  (UINT32 *)&DataLen,
+                  PecCheck
                   );
       if (EFI_ERROR (Status)) {
         if (Status != EFI_TIMEOUT) {

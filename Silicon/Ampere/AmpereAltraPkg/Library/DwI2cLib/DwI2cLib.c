@@ -600,7 +600,8 @@ InternalI2cRead (
   UINT32  CmdLength,
   UINT8   *Buf,
   UINT32  *Length,
-  BOOLEAN IsSmbus
+  BOOLEAN IsSmbus,
+  BOOLEAN PecCheck
   )
 {
   EFI_STATUS Status;
@@ -671,8 +672,12 @@ InternalI2cRead (
       Status = EFI_INVALID_PARAMETER;
       goto Exit;
     }
-    // Update Length with DataLength + PEC
-    *Length = ResponseLen + 2;
+    // Update Length with DataLength byte
+    *Length = ResponseLen + 1;
+    if (PecCheck) {
+      // Update length value with PEC byte
+      *Length += 1;
+    }
   }
 
   while ((*Length - ReadCount) != 0) {
@@ -816,7 +821,7 @@ I2cRead (
 
   I2cSetSlaveAddr (Bus, SlaveAddr);
 
-  return InternalI2cRead (Bus, BufCmd, CmdLength, Buf, ReadLength, FALSE);
+  return InternalI2cRead (Bus, BufCmd, CmdLength, Buf, ReadLength, FALSE, FALSE);
 }
 
 /**
@@ -840,12 +845,13 @@ I2cRead (
 EFI_STATUS
 EFIAPI
 SmbusRead (
-  IN     UINT32 Bus,
-  IN     UINT32 SlaveAddr,
-  IN     UINT8  *BufCmd,
-  IN     UINT32 CmdLength,
-  IN OUT UINT8  *Buf,
-  IN OUT UINT32 *ReadLength
+  IN     UINT32  Bus,
+  IN     UINT32  SlaveAddr,
+  IN     UINT8   *BufCmd,
+  IN     UINT32  CmdLength,
+  IN OUT UINT8   *Buf,
+  IN OUT UINT32  *ReadLength,
+  IN     BOOLEAN PecCheck
   )
 {
   if (Bus >= AC01_I2C_MAX_BUS_NUM
@@ -857,7 +863,7 @@ SmbusRead (
 
   I2cSetSlaveAddr (Bus, SlaveAddr);
 
-  return InternalI2cRead (Bus, BufCmd, CmdLength, Buf, ReadLength, TRUE);
+  return InternalI2cRead (Bus, BufCmd, CmdLength, Buf, ReadLength, TRUE, PecCheck);
 }
 /**
  Setup new transaction with I2C slave device.

@@ -85,12 +85,13 @@ I2cRead (
 EFI_STATUS
 EFIAPI
 SmbusRead (
-  IN     UINT32 Bus,
-  IN     UINT32 SlaveAddr,
-  IN     UINT8  *BufCmd,
-  IN     UINT32 CmdLength,
-  IN OUT UINT8  *Buf,
-  IN OUT UINT32 *ReadLength
+  IN     UINT32  Bus,
+  IN     UINT32  SlaveAddr,
+  IN     UINT8   *BufCmd,
+  IN     UINT32  CmdLength,
+  IN OUT UINT8   *Buf,
+  IN OUT UINT32  *ReadLength,
+  IN     BOOLEAN PecCheck
   );
 
 /**
