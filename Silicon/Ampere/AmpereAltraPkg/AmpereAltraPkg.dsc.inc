@@ -97,6 +97,7 @@
   SecVarLib|Silicon/Ampere/AmpereAltraPkg/Library/SecVarLib/SecVarLib.inf
   SmbusHcCommonLib|Silicon/Ampere/AmpereAltraPkg/Library/SmbusHcCommonLib/SmbusHcCommonLib.inf
   OemMiscLib|Silicon/Ampere/AmpereAltraPkg/Library/OemMiscLib/OemMiscLib.inf
+  IpmiBlobsTransferLib|Silicon/Ampere/AmpereSiliconPkg/Library/IpmiBlobsTransferLib/IpmiBlobsTransferLib.inf
 
   #
   # ARM PL011 UART Driver
