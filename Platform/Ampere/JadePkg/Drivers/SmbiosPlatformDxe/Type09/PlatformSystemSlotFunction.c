@@ -59,8 +59,8 @@ typedef enum {
   S1_RISERX24_SLOT3_INDEX,
   S1_RISERX8_SLOT1_INDEX,
   S0_OCP_NIC_3_0_INDEX,
-  S1_NVME_M_2_SLOT1_INDEX,
-  S1_NVME_M_2_SLOT2_INDEX
+  S0_NVME_M_2_SLOT1_INDEX,
+  S0_NVME_M_2_SLOT2_INDEX
 } SLOT_INDEX;
 
 BOOLEAN
@@ -275,14 +275,14 @@ UpdateSmbiosType9 (
     }
   break;
 
-  case S1_NVME_M_2_SLOT1_INDEX:
+  case S0_NVME_M_2_SLOT1_INDEX:
     if (!IsAc01Processor ()) {
       // Socket 0 RCA6
       InputData->SegmentGroupNum = 4;
     }
   break;
 
-  case S1_NVME_M_2_SLOT2_INDEX:
+  case S0_NVME_M_2_SLOT2_INDEX:
     if (!IsAc01Processor ()) {
       // Socket 0 RCA6
       InputData->SegmentGroupNum = 4;

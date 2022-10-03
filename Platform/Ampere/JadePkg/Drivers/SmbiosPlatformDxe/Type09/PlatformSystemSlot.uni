@@ -16,5 +16,5 @@
 #string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_6   #language en-US  "S1 Riser x24 - Slot 3"
 #string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_7   #language en-US  "S1 Riser x8 - Slot 1"
 #string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_8   #language en-US  "S0 OCP NIC 3.0"
-#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_9   #language en-US  "S1 NVMe M.2 - Slot 1"
-#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_10  #language en-US  "S1 NVMe M.2 - Slot 2"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_9   #language en-US  "S0 NVMe M.2 - Slot 1"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_10  #language en-US  "S0 NVMe M.2 - Slot 2"
