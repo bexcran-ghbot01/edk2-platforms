@@ -303,7 +303,7 @@ OemIsProcessorPresent (
     return TRUE;
   }
 
-  return IsSlaveSocketAvailable ();
+  return IsSlaveSocketActive ();
 }
 
 /**
