@@ -1692,6 +1692,30 @@ Ac01PcieCoreQoSLinkCheckRecovery (
   return LINK_CHECK_SUCCESS;
 }
 
+BOOLEAN
+Ac01PcieCoreCheckCardPresent (
+  IN AC01_PCIE_CONTROLLER  *PcieController
+  )
+{
+  EFI_PHYSICAL_ADDRESS  TargetAddress;
+  UINT32                ControlValue;
+
+  ControlValue = 0;
+
+  TargetAddress = PcieController->CsrBase;
+
+  ControlValue = MmioRead32 (TargetAddress + AC01_PCIE_CORE_LINK_CTRL_REG);
+
+  if (0 == LTSSMENB_GET (ControlValue)) {
+    //
+    // LTSSMENB is clear to 0x00 by Hardware -> link partner is connected.
+    //
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
 VOID
 Ac01PcieCoreUpdateLink (
   IN  AC01_ROOT_COMPLEX *RootComplex,
@@ -1744,9 +1768,13 @@ Ac01PcieCoreUpdateLink (
         DisableCompletionTimeOut (RootComplex, PcieIndex, FALSE);
 
       } else {
-        *IsNextRoundNeeded = FALSE;
         FailedPciePtr[*FailedPcieCount] = PcieIndex;
         *FailedPcieCount += 1;
+
+        if (Ac01PcieCoreCheckCardPresent (Pcie)) {
+          *IsNextRoundNeeded = TRUE;
+          DEBUG ((DEBUG_INFO, "PCIE%d.%d Link retry\n", RootComplex->ID, PcieIndex));
+        }
       }
     }
   }

@@ -94,6 +94,7 @@
 
 // AC01_PCIE_CORE_LINK_CTRL_REG
 #define LTSSMENB_SET(dst, src)              (((dst) & ~0x1) | (((UINT32) (src)) & 0x1))
+#define LTSSMENB_GET(dst)                   ((dst) & (BIT0))
 #define   HOLD_LINK_TRAINING                0
 #define   START_LINK_TRAINING               1
 #define DEVICETYPE_SET(dst, src)            (((dst) & ~0xF0) | (((UINT32) (src) << 4) & 0xF0))
