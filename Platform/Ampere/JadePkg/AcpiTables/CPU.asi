@@ -136,11 +136,11 @@ Scope(\_SB) {
         100,                 // Residency Counter Frequency
         0,                   // No Parent State
         0x01000100,          // Integer Entry method
-        ResourceTemplate() { // Residency Counter
-          Register (SystemMemory, 64, 0, 0x88980000, 4)
+        ResourceTemplate() { // Null Residency Counter
+          Register (SystemMemory, 0, 0, 0, 0)
         },
-        ResourceTemplate() { // Usage Counter
-          Register (SystemMemory, 32, 0, 0x88980008, 3)
+        ResourceTemplate() { // Null Usage Counter
+          Register (SystemMemory, 0, 0, 0, 0)
         },
         "System Standby"
       },
