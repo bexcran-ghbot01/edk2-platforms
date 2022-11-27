@@ -428,7 +428,7 @@ APRIORI DXE {
   #
   # Ipmi utilities
   #
-  INF   Silicon/Ampere/AmpereAltraPkg/Application/IpmiUtil/IpmiUtilDynamicCommand.inf
+  INF Silicon/Ampere/AmpereSiliconPkg/Application/IpmiUtil/IpmiUtilDynamicCommand.inf
 
   #
   # HII

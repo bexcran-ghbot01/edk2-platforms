@@ -331,7 +331,7 @@
   #
   # Ipmi utilities
   #
-  Silicon/Ampere/AmpereAltraPkg/Application/IpmiUtil/IpmiUtilDynamicCommand.inf
+  Silicon/Ampere/AmpereSiliconPkg/Application/IpmiUtil/IpmiUtilDynamicCommand.inf
 
   #
   # HII
