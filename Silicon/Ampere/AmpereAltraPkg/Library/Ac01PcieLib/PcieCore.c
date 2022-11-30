@@ -1168,11 +1168,11 @@ AutoLaneBifurcationRetry:
     // Assert PERST low to reset endpoint
     BoardPcieAssertPerst (RootComplex, PcieIndex, FALSE);
 
-    // Start link training
-    StartLinkTraining (RootComplex, PcieIndex, TRUE);
-
     // Complete the PERST pulse
     BoardPcieAssertPerst (RootComplex, PcieIndex, TRUE);
+
+    // Start link training
+    StartLinkTraining (RootComplex, PcieIndex, TRUE);
 
     // Lock programming of config space
     EnableDbiAccess  (RootComplex, PcieIndex, FALSE);
