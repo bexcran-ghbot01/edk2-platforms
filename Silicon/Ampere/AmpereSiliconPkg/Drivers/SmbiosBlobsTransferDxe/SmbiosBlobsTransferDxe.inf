@@ -35,6 +35,7 @@
   gEfiSmbiosTableGuid   ## CONSUMES ## SystemTable
   gEfiSmbios3TableGuid  ## CONSUMES ## SystemTable
   gEfiEventExitBootServicesGuid  ## CONSUMES
+  gSmbiosBlobsTransferGuid        ## CONSUMES
 
 [Depex]
   gIpmiProtocolGuid

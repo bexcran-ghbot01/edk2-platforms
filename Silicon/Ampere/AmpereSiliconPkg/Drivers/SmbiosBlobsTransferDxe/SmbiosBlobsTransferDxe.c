@@ -8,6 +8,7 @@
 
 #include <Uefi.h>
 
+#include <Guid/SmbiosBlobsTransfer.h>
 #include <IndustryStandard/SmBios.h>
 #include <Library/BaseLib.h>
 #include <Library/BaseMemoryLib.h>
@@ -20,9 +21,10 @@
 #include <Library/UefiLib.h>
 #include <Library/UefiRuntimeServicesTableLib.h>
 
-#define SMBIOS_COMMIT_POLL_INTERVAL  (200 * 1000)   // 200ms
-#define RETRY_COUNTER                10
-#define SMBIOS_BLOBS_ID              "/smbios"
+#define SMBIOS_COMMIT_POLL_INTERVAL    (200 * 1000) // 200ms
+#define RETRY_COUNTER                  10
+#define SMBIOS_BLOBS_ID                "/smbios"
+#define SMBIOS_BLOB_TRANSFER_VAR_NAME  L"SmbiosBlobTransfer"
 
 UINT8  OpenBmcIanaNumber[IANA_OEM_NUMBER_SIZE] = { 0xcf, 0xc2, 0x00 };
 
@@ -256,6 +258,7 @@ SmbiosBlobTransfer (
   EFI_STATUS  Status;
   UINT16      SessionId;
   UINT8       IanaNumber[IANA_OEM_NUMBER_SIZE];
+  UINTN       SessionIdSize;
 
   Status = SmbiosBlobsDiscover (IanaNumber);
   if (EFI_ERROR (Status)) {
@@ -270,8 +273,47 @@ SmbiosBlobTransfer (
              &SessionId
              );
   if (EFI_ERROR (Status)) {
-    return;
+    //
+    // There may sometimes be an old session that has previously started.
+    // We can not open a new session until BMC kills the old one (typically 1 minute).
+    // To recover the interface, we save the opened session to the UEFI variable
+    // and then try to close it when needed.
+    //
+    SessionIdSize = sizeof (SessionId);
+    Status        = gRT->GetVariable (
+                           SMBIOS_BLOB_TRANSFER_VAR_NAME,
+                           &gSmbiosBlobsTransferGuid,
+                           NULL,
+                           &SessionIdSize,
+                           &SessionId
+                           );
+    if (EFI_ERROR (Status)) {
+      return;
+    }
+
+    IpmiBlobClose (IanaNumber, SessionId);
+    Status = IpmiBlobOpen (
+               IanaNumber,
+               IPMI_BLOB_OPEN_TO_WRITE,
+               SMBIOS_BLOBS_ID,
+               sizeof (SMBIOS_BLOBS_ID),
+               &SessionId
+               );
+    if (EFI_ERROR (Status)) {
+      return;
+    }
   }
+
+  //
+  // Save this session id for next boot recover.
+  //
+  gRT->SetVariable (
+         SMBIOS_BLOB_TRANSFER_VAR_NAME,
+         &gSmbiosBlobsTransferGuid,
+         EFI_VARIABLE_NON_VOLATILE | EFI_VARIABLE_BOOTSERVICE_ACCESS,
+         sizeof (UINT16),
+         &SessionId
+         );
 
   WriteSmbiosDataToBmc (IanaNumber, SessionId);
 
