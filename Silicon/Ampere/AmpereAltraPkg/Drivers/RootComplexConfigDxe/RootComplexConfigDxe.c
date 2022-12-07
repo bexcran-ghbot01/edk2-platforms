@@ -836,7 +836,7 @@ PcieRCScreenSetup (
 
     QuestionFlagsSubItem = QuestionFlags;
     if (RootComplex->DefaultDevMapLow != 0) {
-      QuestionFlagsSubItem |= EFI_IFR_FLAG_READ_ONLY;
+      //QuestionFlagsSubItem |= EFI_IFR_FLAG_READ_ONLY;
     }
 
     HiiCreateOneOfOpCode (
@@ -859,7 +859,7 @@ PcieRCScreenSetup (
 
     QuestionFlagsSubItem = QuestionFlags;
     if (RootComplex->DefaultDevMapHigh != 0) {
-      QuestionFlagsSubItem |= EFI_IFR_FLAG_READ_ONLY;
+      //QuestionFlagsSubItem |= EFI_IFR_FLAG_READ_ONLY;
     }
 
     HiiCreateOneOfOpCode (
