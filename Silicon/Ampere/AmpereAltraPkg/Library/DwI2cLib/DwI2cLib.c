@@ -668,7 +668,9 @@ InternalI2cRead (
     WriteCount++;
     Buf[ReadCount++] = ResponseLen;
 
-    if (*Length < (ResponseLen + 2)) {
+    if ((*Length < (ResponseLen + 2)) || (!PecCheck && ResponseLen == 0)) {
+      MmioWrite32 (Base + DW_IC_DATA_CMD, DW_IC_DATA_CMD_CMD | DW_IC_DATA_CMD_STOP);
+      I2cSync ();
       Status = EFI_INVALID_PARAMETER;
       goto Exit;
     }
