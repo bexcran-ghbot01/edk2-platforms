@@ -31,8 +31,5 @@
   UefiDriverEntryPoint
   UefiLib
 
-[Pcd]
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
-
 [Depex]
   TRUE

@@ -48,8 +48,6 @@
   gArmTokenSpaceGuid.PcdSystemMemoryBase
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion
-
-[Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
 
 [Guids]
