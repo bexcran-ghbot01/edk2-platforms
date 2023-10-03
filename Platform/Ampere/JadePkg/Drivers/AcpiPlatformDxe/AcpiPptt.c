@@ -416,3 +416,4 @@ AcpiInstallPpttTable (
 
   return Status;
 }
+
