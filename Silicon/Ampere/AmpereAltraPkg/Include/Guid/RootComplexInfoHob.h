@@ -29,7 +29,6 @@ extern GUID gRootComplexInfoHobGuid;
 //
 // PCIe link speed
 //
-#define LINK_SPEED_NONE    0x00
 #define LINK_SPEED_GEN1    0x01
 #define LINK_SPEED_GEN2    0x02
 #define LINK_SPEED_GEN3    0x04
@@ -45,7 +44,6 @@ typedef enum {
 } DEV_MAP_MODE;
 
 typedef enum {
- PCIeSpeed0 = LINK_SPEED_NONE,
  PCIeSpeed1 = LINK_SPEED_GEN1,
  PCIeSpeed2 = LINK_SPEED_GEN2,
  PCIeSpeed3 = LINK_SPEED_GEN3,
