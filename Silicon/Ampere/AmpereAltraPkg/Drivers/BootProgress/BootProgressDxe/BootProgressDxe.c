@@ -88,7 +88,7 @@ UINT32 DxeErrorCode[] = {
 
 EFI_RSC_HANDLER_PROTOCOL *mRscHandlerProtocol = NULL;
 
-STATIC UINT8 mBootstate = BOOT_START;
+STATIC UINT8 mBootstate = BootStart;
 
 STATIC BOOLEAN mEndOfDxe = FALSE;
 

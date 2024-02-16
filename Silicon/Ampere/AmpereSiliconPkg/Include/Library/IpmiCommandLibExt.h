@@ -76,44 +76,6 @@ IpmiGetBmcLanInfo (
   );
 
 /**
-  Set BMC Boot Options parameter.
-
-  @param[in]    SetBootOptionsRequest      A pointer to an callee allocated buffer containing request data.
-  @param[in]    SetBootOptionsRequestSize  Size of SetBootOptionsRequest.
-  @param[out]   CompletionCode             Returned Completion Code from BMC.
-
-  @retval EFI_SUCCESS                      The command byte stream was successfully submit to the device and a response was successfully received.
-  @retval EFI_INVALID_PARAMETER            SetBootOptionsRequest or CompletionCode was NULL.
-  @retval other                            Failed to write data to the device.
-**/
-EFI_STATUS
-EFIAPI
-IpmiSetSystemBootOptions (
-  IN  IPMI_SET_BOOT_OPTIONS_REQUEST  *SetBootOptionsRequest,
-  IN  UINT32                         SetBootOptionsRequestSize,
-  OUT UINT8                          *CompletionCode
-  );
-
-/**
-  Get BMC Boot Options parameter.
-
-  @param[in]        ParameterSelector           Boot Options parameter which want to get.
-  @param[out]       GetBootOptionsResponse      A pointer to an callee allocated buffer to store response data.
-  @param[in, out]   GetBootOptionsResponseSize  Size of GetBootOptionsResponse.
-
-  @retval EFI_SUCCESS                           The command byte stream was successfully submit to the device and a response was successfully received.
-  @retval EFI_INVALID_PARAMETER                 GetBootOptionsResponse or GetBootOptionsResponseSize was NULL.
-  @retval other                                 Failed to write data to the device.
-**/
-EFI_STATUS
-EFIAPI
-IpmiGetSystemBootOptions (
-  IN     UINT8                          ParameterSelector,
-  OUT    IPMI_GET_BOOT_OPTIONS_RESPONSE *GetBootOptionsResponse,
-  IN OUT UINT32                         *GetBootOptionsResponseSize
-  );
-
-/**
   Set Boot Info Acknowledge to notify BMC that the Boot Flags has been handled by UEFI.
 
   @retval EFI_SUCCESS                           The command byte stream was successfully submit to the device and a response was successfully received.

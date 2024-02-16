@@ -48,7 +48,7 @@ IpmiGetBmcLanInfo (
   // Get Channel Information
   //
   ZeroMem (&GetChannelInfoRequest, sizeof (GetChannelInfoRequest));
-  GetChannelInfoRequest.Bits.ChannelNumber = BmcChannel;
+  GetChannelInfoRequest.ChannelNumber.Bits.ChannelNo = BmcChannel;
 
   ResponseSize = sizeof (GetChannelInfoResponse);
   Status = IpmiSubmitCommand (
