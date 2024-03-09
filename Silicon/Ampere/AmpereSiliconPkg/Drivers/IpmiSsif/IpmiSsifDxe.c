@@ -137,6 +137,10 @@ SsifEntry (
   // TODO: Get global settings, check for Alert support.
   //
 
+  if (EFI_ERROR (Status)) {
+    return EFI_UNSUPPORTED;
+  }
+
   //
   // Install IPMI Protocol
   //
