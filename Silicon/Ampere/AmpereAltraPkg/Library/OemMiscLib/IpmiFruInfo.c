@@ -111,7 +111,7 @@ STATIC BOOLEAN mReadFruInfo = FALSE;
 // Assume that there is only one FRU device
 // and Device ID for Chassis/Board Information is 0.
 //
-#define FRU_DEVICE_ID_DEFAULT         0
+#define FRU_DEVICE_ID_DEFAULT         1
 
 //
 // Maximum length of response data
@@ -475,7 +475,7 @@ IpmiReadFruInfo (
   DEBUG ((DEBUG_INFO, "%a: FruInventorySupport=%x\n", __FUNCTION__, ControllerInfo.DeviceSupport.Bits.FruInventorySupport));
 
   if (ControllerInfo.DeviceSupport.Bits.FruInventorySupport) {
-    GetFruInventoryAreaInfoRequest.DeviceId = FRU_DEVICE_ID_DEFAULT;
+    GetFruInventoryAreaInfoRequest.DeviceId = ControllerInfo.DeviceId;
     Status = IpmiGetFruInventoryAreaInfo (&GetFruInventoryAreaInfoRequest, &GetFruInventoryAreaInfoResponse);
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "%a: IpmiGetFruInventoryAreaInfo Status=%x\n", __FUNCTION__, Status));
