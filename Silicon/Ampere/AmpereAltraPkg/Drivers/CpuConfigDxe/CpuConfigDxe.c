@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -73,9 +73,7 @@ CpuNvParamGet (
 {
   EFI_STATUS Status;
   UINT32     Value;
-  UINT32     CPMcount;
-  UINT16     MaxCPM = 16;
-  INTN       i;
+  UINT16     CpmCount;
 
   ASSERT (Configuration != NULL);
 
@@ -91,18 +89,14 @@ CpuNvParamGet (
     Configuration->CpuSubNumaMode = Value;
   }
 
-  CPMcount = GetNumberOfConfiguredCPMs(0);
+  CpmCount = GetNumberOfConfiguredCPMs(0);
 
-  if (CPMcount == 0){
-    for (i=0; i<MaxCPM; i++){
-      Configuration->CPMs[i] = 1;
-    }
+  if (CpmCount == 0) {
+    Configuration->NumActiveCores = 128;
+  } else {
+    Configuration->NumActiveCores = CpmCount * 2;
   }
-  else {
-    for (i=0; i<CPMcount; i++){
-      Configuration->CPMs[i] = 1;
-    }
-  }
+
   return EFI_SUCCESS;
 }
 
@@ -114,9 +108,6 @@ CpuNvParamSet (
 {
   EFI_STATUS Status;
   UINT32     Value;
-  UINT32     CPMcount = 0;
-  UINT16     MaxCPM = 16;
-  INTN       i;
 
   ASSERT (Configuration != NULL);
 
@@ -141,18 +132,17 @@ CpuNvParamSet (
     }
   }
 
-  for (i=0; i<MaxCPM; i++){
-    if (Configuration->CPMs[i] == 1){
-      CPMcount++;
-    }
-    else{
-      break;
-    }
+  if ((Configuration->NumActiveCores % 2) != 0) {
+    return EFI_INVALID_PARAMETER;
   }
 
-  SetNumberOfConfiguredCPMs(0, CPMcount);
+  Status = SetNumberOfConfiguredCPMs(0, Configuration->NumActiveCores / 2);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "Failed to set number of active cores: %r\n", Status));
+    ASSERT (0);
+  }
 
-  return EFI_SUCCESS;
+  return Status;
 }
 
 STATIC
@@ -550,6 +540,7 @@ CpuConfigUnload (
            );
     mDriverHandle = NULL;
   }
+
 
   if (mPrivateData->HiiHandle != NULL) {
     HiiRemovePackages (mPrivateData->HiiHandle);
