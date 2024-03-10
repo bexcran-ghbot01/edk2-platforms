@@ -22,7 +22,8 @@
   @retval Other                      Failed to update the SMBIOS Table.
 
 **/
-SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformPhysicalMemoryArray) {
+SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformPhysicalMemoryArray)
+{
   UINT8               Index;
   EFI_STATUS          Status;
   SMBIOS_TABLE_TYPE16 *InputData;
