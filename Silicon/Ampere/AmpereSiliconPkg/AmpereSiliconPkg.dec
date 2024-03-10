@@ -102,6 +102,11 @@
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion|0|UINT8|0x00000006
 
   #
+  # SMBIOS Type 4 Pcd
+  #
+  gAmpereTokenSpaceGuid.PcdPlatformNumProcessorSockets|2|UINT8|0xB0000014
+
+  #
   # SMBus
   #
   gAmpereTokenSpaceGuid.PcdSmbusI2cBusNumber|0x03|UINT8|0x00000007
