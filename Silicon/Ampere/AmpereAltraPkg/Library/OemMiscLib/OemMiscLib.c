@@ -268,7 +268,7 @@ OemGetMaxProcessors (
   VOID
   )
 {
-  return GetNumberOfSupportedSockets ();
+  return PcdGet8 (PcdPlatformNumProcessorSockets);
 }
 
 /**

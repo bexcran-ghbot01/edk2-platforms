@@ -46,6 +46,7 @@
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gAmpereTokenSpaceGuid.PcdPlatformNumProcessorSockets
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
