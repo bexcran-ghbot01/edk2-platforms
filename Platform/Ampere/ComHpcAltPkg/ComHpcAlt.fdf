@@ -242,6 +242,12 @@ APRIORI DXE {
   INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
   INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
   INF ArmPkg/Drivers/MmCommunicationDxe/MmCommunication.inf
+  INF ArmPkg/Drivers/ArmPsciMpServicesDxe/ArmPsciMpServicesDxe.inf
+
+!if $(PERFORMANCE_MEASUREMENT_ENABLE) == TRUE
+  INF MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableDxe/FirmwarePerformanceDxe.inf
+!endif
+
 
   #
   # Fixup memory map
@@ -323,11 +329,9 @@ APRIORI DXE {
   INF MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
   INF Platform/Ampere/JadePkg/Drivers/PciPlatformDxe/PciPlatformDxe.inf
 
-  #
-  # Network PCIe I210
-  #
   !if $(NETWORK_ENABLE) == TRUE
-    INF Platform/Ampere/AmperePlatformPkg/Drivers/GigUndiDxe/GigUndiDxe.inf
+    # Intel I210
+    INF IntelUndiBin/GigUndiBinDebug.inf
     INF MdeModulePkg/Bus/Usb/UsbNetwork/UsbCdcEcm/UsbCdcEcm.inf
   !endif
 
@@ -357,6 +361,9 @@ APRIORI DXE {
   INF ShellPkg/Application/Shell/Shell.inf
 !if $(INCLUDE_TFTP_COMMAND) == TRUE
   INF ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
+!endif
+!if $(PERFORMANCE_MEASUREMENT_ENABLE) == TRUE
+  INF ShellPkg/DynamicCommand/DpDynamicCommand/DpDynamicCommand.inf
 !endif
 
 !if $(TPM2_ENABLE) == TRUE
@@ -444,11 +451,7 @@ APRIORI DXE {
   #
   # Emulator for x64 OpRoms, etc.
   #
-!if $(TARGET) == RELEASE
   INF MultiArchUefiPkg/Drivers/EmulatorBin/EmulatorBinRelease.inf
-!else
-  INF MultiArchUefiPkg/Drivers/EmulatorBin/EmulatorBinDebug.inf
-!endif
 
 !include AdlinkAmpereAltra.fdf.inc
 !include AdlinkComHpc.fdf.inc
@@ -456,9 +459,11 @@ APRIORI DXE {
   #
   # EFI Redfish drivers
   #
+!if $(NETWORK_ENABLE) == TRUE
 !include RedfishPkg/Redfish.fdf.inc
 !if $(REDFISH_ENABLE) == TRUE
   INF Platform/Ampere/JadePkg/Drivers/SmbiosType42Dxe/SmbiosType42Dxe.inf
+!endif
 !endif
 
   #
