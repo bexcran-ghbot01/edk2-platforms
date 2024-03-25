@@ -20,7 +20,7 @@
 #
 ################################################################################
 
-[FD.JADE_SCP_FIRMWARE_CAPSULE]
+[FD.COMHPCALT_SCP_FIRMWARE_CAPSULE]
 BaseAddress   = 0x00000000  # The base address of the Firmware in NOR Flash.
 Size          = 0x00050000  # The size in bytes of the FLASH Device
 ErasePolarity = 1
@@ -72,7 +72,7 @@ READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
 FILE RAW = 431C06ED-4FE2-438F-98A3-A9B1FD923019 { # PcdEdkiiSystemFirmwareFileGuid
-    FD = JADE_SCP_FIRMWARE_CAPSULE
+    FD = COMHPCALT_SCP_FIRMWARE_CAPSULE
   }
 
 FILE RAW = ce57b167-b0e4-41e8-a897-5f4feb781d40 { # gEdkiiSystemFmpCapsuleDriverFvFileGuid
