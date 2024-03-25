@@ -30,10 +30,12 @@ Ac01PcieCoreSetupRC (
   Verify the link status and retry to initialize the Root Complex if there's any issue.
 
   @param RootComplexList      Pointer to the Root Complex list
+  @param NumRootComplexes     The number of root complexes in the system.
 **/
 VOID
 Ac01PcieCorePostSetupRC (
-  IN AC01_ROOT_COMPLEX *RootComplexList
+  IN AC01_ROOT_COMPLEX *RootComplexList,
+  IN UINT8              NumRootComplexes
   );
 
 /**

@@ -53,6 +53,7 @@ BuildRootComplexData (
   ROOT_COMPLEX_CONFIG_VARSTORE_DATA    RootComplexConfig;
   UINT8                                RCIndex;
   UINT8                                PcieIndex;
+  UINT8                                NumRootComplexes;
   UINTN                                DataSize;
 
   ConfigFound = FALSE;
@@ -89,9 +90,12 @@ BuildRootComplexData (
   if (!IsSlaveSocketAvailable ()) {
     CopyMem ((VOID *)&mMmio32Base, (VOID *)&mMmio32Base1P, sizeof (mMmio32Base1P));
     CopyMem ((VOID *)&mMmio32Size, (VOID *)&mMmio32Size1P, sizeof (mMmio32Size1P));
+    NumRootComplexes = AC01_PCIE_MAX_RCS_PER_SOCKET;
+  } else {
+    NumRootComplexes = AC01_PCIE_MAX_ROOT_COMPLEX;
   }
 
-  for (RCIndex = 0; RCIndex < AC01_PCIE_MAX_ROOT_COMPLEX; RCIndex++) {
+  for (RCIndex = 0; RCIndex < NumRootComplexes; RCIndex++) {
     RootComplex = &mRootComplexList[RCIndex];
     RootComplex->Active = ConfigFound ? RootComplexConfig.RCStatus[RCIndex] : TRUE;
     RootComplex->DevMapLow = ConfigFound ? RootComplexConfig.RCBifurcationLow[RCIndex] : 0;
@@ -162,13 +166,20 @@ PcieInitEntry (
   AC01_ROOT_COMPLEX            *RootComplex;
   EFI_STATUS                   Status;
   UINT8                        Index;
+  UINT8                        NumRootComplexes;
 
   BuildRootComplexData ();
+
+  if (!IsSlaveSocketAvailable ()) {
+    NumRootComplexes = AC01_PCIE_MAX_RCS_PER_SOCKET;
+  } else {
+    NumRootComplexes = AC01_PCIE_MAX_ROOT_COMPLEX;
+  }
 
   //
   // Initialize Root Complex and underneath controllers
   //
-  for (Index = 0; Index < AC01_PCIE_MAX_ROOT_COMPLEX; Index++) {
+  for (Index = 0; Index < NumRootComplexes; Index++) {
     RootComplex = &mRootComplexList[Index];
     if (!RootComplex->Active) {
       continue;
@@ -185,7 +196,7 @@ PcieInitEntry (
     }
   }
 
-  Ac01PcieCorePostSetupRC (mRootComplexList);
+  Ac01PcieCorePostSetupRC (mRootComplexList, NumRootComplexes);
 
   PcieHotPlugStart ();
 

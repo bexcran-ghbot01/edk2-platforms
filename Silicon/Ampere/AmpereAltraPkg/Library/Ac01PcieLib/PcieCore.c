@@ -1806,7 +1806,8 @@ Ac01PcieCoreUpdateLink (
 **/
 VOID
 Ac01PcieCorePostSetupRC (
-  IN AC01_ROOT_COMPLEX *RootComplexList
+  IN AC01_ROOT_COMPLEX *RootComplexList,
+  IN UINT8              NumRootComplexes
   )
 {
   UINT8   RCIndex, Idx;
@@ -1839,7 +1840,7 @@ _link_polling:
     PrevTick = CurrTick;
   } while (ElapsedCycle < TimerTicks64);
 
-  for (RCIndex = 0; RCIndex < AC01_PCIE_MAX_ROOT_COMPLEX; RCIndex++) {
+  for (RCIndex = 0; RCIndex < NumRootComplexes; RCIndex++) {
     Ac01PcieCoreUpdateLink (&RootComplexList[RCIndex], &IsNextRoundNeeded, FailedPciePtr, &FailedPcieCount);
     if (IsNextRoundNeeded) {
       NextRoundNeeded = TRUE;
@@ -1851,7 +1852,7 @@ _link_polling:
     // Timer is up. Give another chance to re-program controller
     //
     ReInit++;
-    for (RCIndex = 0; RCIndex < AC01_PCIE_MAX_ROOT_COMPLEX; RCIndex++) {
+    for (RCIndex = 0; RCIndex < NumRootComplexes; RCIndex++) {
       Ac01PcieCoreUpdateLink (&RootComplexList[RCIndex], &IsNextRoundNeeded, FailedPciePtr, &FailedPcieCount);
       if (IsNextRoundNeeded) {
         for (Idx = 0; Idx < FailedPcieCount; Idx++) {
