@@ -47,12 +47,13 @@
   #  DEBUG_VERBOSE   0x00400000  // Detailed debug messages that may
   #                              // significantly impact boot performance
   #  DEBUG_ERROR     0x80000000  // Error
-  DEFINE DEBUG_PRINT_ERROR_LEVEL = 0x8000000F
+  DEFINE DEBUG_PRINT_ERROR_LEVEL = 0x8000004F
   DEFINE FIRMWARE_VER            = 2.04.100.07
   DEFINE SECURE_BOOT_ENABLE      = TRUE
   DEFINE TPM2_ENABLE             = TRUE
   DEFINE INCLUDE_TFTP_COMMAND    = TRUE
   DEFINE PLATFORM_CONFIG_UUID    = 0690C53C-01B5-40AD-A65B-5399AC0B1E9B
+
   #
   # Network definition
   #
@@ -62,6 +63,7 @@
   DEFINE NETWORK_ALLOW_HTTP_CONNECTIONS      = TRUE
   DEFINE NETWORK_TLS_ENABLE                  = TRUE
   DEFINE REDFISH_ENABLE                      = TRUE
+  DEFINE PERFORMANCE_MEASUREMENT_ENABLE      = FALSE
 
   DEFINE DEFAULT_KEYS        = TRUE
   DEFINE PK_DEFAULT_FILE     = Platform/Ampere/JadePkg/TestKeys/PK.cer
@@ -106,10 +108,12 @@
   #
   # EFI Redfish drivers
   #
+!if $(NETWORK_ENABLE) == TRUE
 !if $(REDFISH_ENABLE) == TRUE
   RedfishContentCodingLib|RedfishPkg/Library/RedfishContentCodingLibNull/RedfishContentCodingLibNull.inf
   RedfishPlatformCredentialLib|Platform/Ampere/JadePkg/Library/RedfishPlatformCredentialLib/RedfishPlatformCredentialLib.inf
   RedfishPlatformHostInterfaceLib|RedfishPkg/Library/PlatformHostInterfaceLibNull/PlatformHostInterfaceLibNull.inf
+!endif
 !endif
 
   IOExpanderLib|Platform/Ampere/JadePkg/Library/IOExpanderLib/IOExpanderLib.inf
@@ -136,7 +140,38 @@
   #
   gEfiMdeModulePkgTokenSpaceGuid.PcdInstallAcpiSdtProtocol|TRUE
 
+  #
+  # Flag to indicate option of using default or specific platform Port Map table
+  #
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.UseDefaultConfig|FALSE
+
 [PcdsFixedAtBuild]
+
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugGpioResetMap|0x3F
+
+  #
+  # Setting Portmap table
+  #
+  #   * Elements of array:
+  #     - 0:  Index of Portmap entry in Portmap table structure (Vport).
+  #     - 1:  Socket number (Socket).
+  #     - 2:  Root complex port for each Portmap entry (RcaPort).
+  #     - 3:  Root complex sub-port for each Portmap entry (RcaSubPort).
+  #     - 4:  Select output port of IO expander (PinPort).
+  #     - 5:  I2C address of IO expander that CPLD backplane simulates (I2cAddress).
+  #     - 6:  Address of I2C switch between CPU and CPLD backplane (MuxAddress).
+  #     - 7:  Channel of I2C switch (MuxChannel).
+  #     - 8:  It is set from PcieHotPlugSetGPIOMapCmd () function to select GPIO[16:21] (PcdPcieHotPlugGpioResetMap) or I2C for PCIe reset purpose.
+  #     - 9:  Segment of root complex (Segment).
+  #     - 10: SSD slot index on the front panel of backplane (DriveIndex).
+  #
+  #   * Caution:
+  #     - The last array ({ 0xFF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xFF }) require if no fully structured used.
+  #     - Size of Portmap table: PortMap[MAX_PORTMAP_ENTRY][sizeof(PCIE_HOTPLUG_PORTMAP_ENTRY)] <=> PortMap[96][11].
+  #   * Example: Bellow configuration is the configuration for Portmap table of Mt. Jade 2U platform.
+  #
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[0]|{ 0xFF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xFF }       # Require if no fully structure used
+
 !ifdef $(FIRMWARE_VER)
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"$(FIRMWARE_VER)"
 !endif
@@ -172,6 +207,7 @@
   gEfiSecurityPkgTokenSpaceGuid.PcdRemovableMediaImageVerificationPolicy|0x04
 !endif
 
+!if $(NETWORK_ENABLE) == TRUE
 !if $(REDFISH_ENABLE) == TRUE
   gEfiRedfishPkgTokenSpaceGuid.PcdRedfishRestExServiceDevicePath.DevicePathMatchMode|DEVICE_PATH_MATCH_MAC_NODE
   gEfiRedfishPkgTokenSpaceGuid.PcdRedfishRestExServiceDevicePath.DevicePathNum|1
@@ -183,6 +219,7 @@
 
   # Allow Redish Service while Secure boot is disabled
   gAmpereTokenSpaceGuid.PcdRedfishServiceStopIfSecureBootDisabled|FALSE
+!endif
 !endif
 
 [PcdsDynamicDefault.common.DEFAULT]
@@ -225,12 +262,9 @@
   #
   Platform/Ampere/JadePkg/Drivers/PciPlatformDxe/PciPlatformDxe.inf
 
-  #
-  # Network PCIe I210
-  #
   !if $(NETWORK_ENABLE) == TRUE
-    Platform/Ampere/AmperePlatformPkg/Drivers/GigUndiDxe/GigUndiDxe.inf
-
+    # Intel I210
+    IntelUndiBin/GigUndiBinDebug.inf
     # For the Redfish USB CDC connection to the BMC
     MdeModulePkg/Bus/Usb/UsbNetwork/UsbCdcEcm/UsbCdcEcm.inf
   !endif
@@ -292,9 +326,11 @@
   
   # Redfish
   #
+!if $(NETWORK_ENABLE) == TRUE
 !include RedfishPkg/Redfish.dsc.inc
 !if $(REDFISH_ENABLE) == TRUE
   Platform/Ampere/JadePkg/Drivers/SmbiosType42Dxe/SmbiosType42Dxe.inf
+!endif
 !endif
 
   #
@@ -302,11 +338,10 @@
   #
   Platform/Ampere/AmperePlatformPkg/Drivers/PlatformBootManagerDxe/PlatformBootManagerDxe.inf
 
+  # Multi-Processor Support
+  ArmPkg/Drivers/ArmPsciMpServicesDxe/ArmPsciMpServicesDxe.inf
+
   #
   # OpRom emulator
   #
-!if $(TARGET) == RELEASE
   MultiArchUefiPkg/Drivers/EmulatorBin/EmulatorBinRelease.inf
-!else
-  MultiArchUefiPkg/Drivers/EmulatorBin/EmulatorBinDebug.inf
-!endif
