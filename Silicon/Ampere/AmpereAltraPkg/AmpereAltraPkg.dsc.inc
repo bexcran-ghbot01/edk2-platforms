@@ -729,6 +729,13 @@
   MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
   MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
 
+!if $(PERFORMANCE_MEASUREMENT_ENABLE)
+  MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableDxe/FirmwarePerformanceDxe.inf {
+    <LibraryClasses>
+      LockBoxLib|MdeModulePkg/Library/LockBoxNullLib/LockBoxNullLib.inf
+  }
+!endif
+
   #
   # Simple TextIn/TextOut for UEFI Terminal
   #
@@ -860,3 +867,7 @@
 !ifdef $(INCLUDE_TFTP_COMMAND)
   ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
 !endif #$(INCLUDE_TFTP_COMMAND)
+
+!if $(PERFORMANCE_MEASUREMENT_ENABLE) == TRUE
+  ShellPkg/DynamicCommand/DpDynamicCommand/DpDynamicCommand.inf
+!endif
