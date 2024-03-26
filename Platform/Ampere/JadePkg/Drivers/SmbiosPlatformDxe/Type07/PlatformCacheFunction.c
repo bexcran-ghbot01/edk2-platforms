@@ -129,11 +129,14 @@ ConfigSLCArchitectureInformation (
   @retval Other                      Failed to add the SMBIOS Table.
 
 **/
-SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformCache) {
+SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformCache)
+{
   EFI_STATUS         Status;
   STR_TOKEN_INFO     *InputStrToken;
   SMBIOS_TABLE_TYPE7 *Type7Record;
   SMBIOS_TABLE_TYPE7 *InputData;
+
+  Status = EFI_SUCCESS;
 
   if (CheckSlcCache ()) {
     InputData = (SMBIOS_TABLE_TYPE7 *)RecordData;

@@ -470,6 +470,9 @@ IpmiClearCmosBootFlags (
   IPMI_GET_BOOT_OPTIONS_RESPONSE          *GetBootOptionsResponse;
   UINT32                                  GetBootOptionsResponseSize;
 
+  SetBootOptionsRequest  = NULL;
+  GetBootOptionsResponse = NULL;
+
   //
   // Get current boot flag
   //

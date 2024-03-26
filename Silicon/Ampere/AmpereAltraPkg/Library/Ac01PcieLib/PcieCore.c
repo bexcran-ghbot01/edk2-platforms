@@ -50,6 +50,8 @@ GetCapabilityBase (
   UINT32                 Val;
   UINT32                 RestoreVal;
 
+  Ret = 0;
+
   RootComplexCfgBase = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << DEV_SHIFT);
   if (!IsRootComplex) {
     // Allow programming to config space
@@ -344,8 +346,8 @@ ProgramRootPortInfo (
   UINT32            PcieIndex
   )
 {
-  PHYSICAL_ADDRESS       CfgBase;
-  PHYSICAL_ADDRESS       TargetAddress;
+  PHYSICAL_ADDRESS   CfgBase;
+  PHYSICAL_ADDRESS   TargetAddress;
   UINT32             Val;
 
   CfgBase = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << DEV_SHIFT);

@@ -539,10 +539,7 @@ CpuConfigDxeEntryPoint (
   EFI_STATUS                      Status;
   EFI_HII_HANDLE                  HiiHandle;
   EFI_HII_CONFIG_ROUTING_PROTOCOL *HiiConfigRouting;
-  BOOLEAN                         ActionFlag;
   CPU_VARSTORE_DATA               *Configuration;
-  EFI_STRING                      ConfigRequestHdr;
-  UINTN                           BufferSize;
 
   //
   // With the fresh system, the NVParam value is invalid (0xFFFFFFFF).

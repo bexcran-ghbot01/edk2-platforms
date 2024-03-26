@@ -480,7 +480,6 @@ GetMaxSpeedGen (
   UINTN                                DataSize;
   EFI_PEI_READ_ONLY_VARIABLE2_PPI      *VariablePpi;
   ROOT_COMPLEX_CONFIG_VARSTORE_DATA    RootComplexConfig;
-  BOOLEAN                              ConfigFound;
   
   ASSERT (MaxPcieControllerOfRootComplexA == 4);
   ASSERT (MaxPcieController == 8);
@@ -504,9 +503,6 @@ GetMaxSpeedGen (
                             &DataSize,
                             &RootComplexConfig
                             );
-    if (!EFI_ERROR (Status)) {
-      ConfigFound = TRUE;
-    }
   }
 
   //
