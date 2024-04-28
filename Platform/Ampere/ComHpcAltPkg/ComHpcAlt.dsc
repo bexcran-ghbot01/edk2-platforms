@@ -64,6 +64,7 @@
   DEFINE NETWORK_TLS_ENABLE                  = TRUE
   DEFINE REDFISH_ENABLE                      = TRUE
   DEFINE PERFORMANCE_MEASUREMENT_ENABLE      = FALSE
+  DEFINE HEAP_GUARD_ENABLE                   = FALSE
 
   DEFINE DEFAULT_KEYS        = TRUE
   DEFINE PK_DEFAULT_FILE     = Platform/Ampere/JadePkg/TestKeys/PK.cer
@@ -222,6 +223,53 @@
   # Allow Redish Service while Secure boot is disabled
   gAmpereTokenSpaceGuid.PcdRedfishServiceStopIfSecureBootDisabled|FALSE
 !endif
+!endif
+
+  #
+  # Optional feature to help prevent EFI memory map fragments
+  # Turned on and off via: PcdPrePiProduceMemoryTypeInformationHob
+  # Values are in EFI Pages (4K). DXE Core will make sure that
+  # at least this much of each type of memory can be allocated
+  # from a single memory range. This way you only end up with
+  # maximum of two fragments for each type in the memory map
+  # (the memory used, and the free memory that was prereserved
+  # but not used).
+  #
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiACPIReclaimMemory|0
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiACPIMemoryNVS|0
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiReservedMemoryType|0
+!if $(SECURE_BOOT_ENABLE) == TRUE
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesData|600
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesCode|400
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesCode|1500
+!else
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesData|300
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesCode|150
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesCode|1000
+!endif
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesData|12000
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderCode|20
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderData|0
+
+  #
+  # Enable strict image permissions for all images. (This applies
+  # only to images that were built with >= 4 KB section alignment.)
+  #
+  gEfiMdeModulePkgTokenSpaceGuid.PcdImageProtectionPolicy|0x3
+
+  #
+  # Enable NX memory protection for all non-code regions, including OEM and OS
+  # reserved ones, with the exception of LoaderData regions, of which OS loaders
+  # (e.g., GRUB) may assume that its contents are executable.
+  #
+  gEfiMdeModulePkgTokenSpaceGuid.PcdDxeNxMemoryProtectionPolicy|0xC000000000007FD5
+
+  gEfiMdeModulePkgTokenSpaceGuid.PcdCpuStackGuard|TRUE
+
+!if $(HEAP_GUARD_ENABLE) == TRUE
+  gEfiMdeModulePkgTokenSpaceGuid.PcdHeapGuardPageType|0xC000000000007B9E
+  gEfiMdeModulePkgTokenSpaceGuid.PcdHeapGuardPoolType|0xC000000000007B9E
+  gEfiMdeModulePkgTokenSpaceGuid.PcdHeapGuardPropertyMask|0x0F
 !endif
 
 [PcdsDynamicDefault.common.DEFAULT]
