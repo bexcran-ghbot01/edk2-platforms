@@ -506,7 +506,6 @@ AcpiPatchPcieMmio32 (
 
   Status = AcpiOpenDSDT (AcpiTableProtocol, &TableHandle);
   if (EFI_ERROR (Status)) {
-    AcpiTableProtocol->Close (TableHandle);
     return Status;
   }
 
