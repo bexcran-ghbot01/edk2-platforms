@@ -71,7 +71,7 @@ READ_STATUS        = TRUE
 READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
-FILE RAW = 431C06ED-4FE2-438F-98A3-A9B1FD923019 { # PcdEdkiiSystemFirmwareFileGuid
+FILE RAW = c07b0079-b3a2-448d-8c9c-46ba3c42b33e { # PcdEdkiiSystemFirmwareFileGuid
     FD = COMHPCALT_SCP_FIRMWARE_CAPSULE
   }
 
@@ -80,12 +80,12 @@ FILE RAW = ce57b167-b0e4-41e8-a897-5f4feb781d40 { # gEdkiiSystemFmpCapsuleDriver
   }
 
 FILE RAW = 812136D3-4D3A-433A-9418-29BB9BF78F6E { # gEdkiiSystemFmpCapsuleConfigFileGuid
-    Platform/Ampere/JadePkg/Capsule/SystemFirmwareUpdateConfig/SCPFirmwareUpdateConfig.ini
+    Platform/Ampere/ComHpcAltPkg/Capsule/SystemFirmwareUpdateConfig/SCPFirmwareUpdateConfig.ini
   }
 
 [FmpPayload.FmpPayloadScpSystemFirmwarePkcs7]
 IMAGE_HEADER_INIT_VERSION = 0x02
-IMAGE_TYPE_ID             = f08bca31-542e-4cea-8b48-8e54f9422594 # PcdSystemFmpCapsuleImageTypeIdGuid
+IMAGE_TYPE_ID             = 704ac8f6-cb39-47b7-8f26-396ce9db6971 # PcdSystemFmpCapsuleImageTypeIdGuid
 IMAGE_INDEX               = 0x1
 HARDWARE_INSTANCE         = 0x0
 MONOTONIC_COUNT           = 0x1
@@ -93,7 +93,7 @@ CERTIFICATE_GUID          = 4AAFD29D-68DF-49EE-8AA9-347D375665A7 # PKCS7
 
 FV = SystemScpFirmwareUpdateCargo
 
-[Capsule.JadeScpFirmwareUpdateCapsuleFmpPkcs7]
+[Capsule.AltraScpFirmwareUpdateCapsuleFmpPkcs7]
 CAPSULE_GUID                = 6dcbd5ed-e82d-4c44-bda1-7194199ad92a # gEfiFmpCapsuleGuid
 CAPSULE_HEADER_SIZE         = 0x20
 CAPSULE_HEADER_INIT_VERSION = 0x1
@@ -118,7 +118,7 @@ READ_STATUS        = TRUE
 READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
-FILE RAW = 431C06ED-4FE2-438F-98A3-A9B1FD923019 { # PcdEdkiiSystemFirmwareFileGuid
+FILE RAW = c07b0079-b3a2-448d-8c9c-46ba3c42b33e { # PcdEdkiiSystemFirmwareFileGuid
     FD = COMHPCALT_UEFI_TFA_FIRMWARE_CAPSULE
   }
 
@@ -127,12 +127,12 @@ FILE RAW = ce57b167-b0e4-41e8-a897-5f4feb781d40 { # gEdkiiSystemFmpCapsuleDriver
   }
 
 FILE RAW = 812136D3-4D3A-433A-9418-29BB9BF78F6E { # gEdkiiSystemFmpCapsuleConfigFileGuid
-    Platform/Ampere/JadePkg/Capsule/SystemFirmwareUpdateConfig/SystemFirmwareUpdateConfig.ini
+    Platform/Ampere/ComHpcAltPkg/Capsule/SystemFirmwareUpdateConfig/SystemFirmwareUpdateConfig.ini
   }
 
 [FmpPayload.FmpPayloadSystemFirmwarePkcs7]
 IMAGE_HEADER_INIT_VERSION = 0x02
-IMAGE_TYPE_ID             = f08bca31-542e-4cea-8b48-8e54f9422594 # PcdSystemFmpCapsuleImageTypeIdGuid
+IMAGE_TYPE_ID             = 704ac8f6-cb39-47b7-8f26-396ce9db6971 # PcdSystemFmpCapsuleImageTypeIdGuid
 IMAGE_INDEX               = 0x1
 HARDWARE_INSTANCE         = 0x0
 MONOTONIC_COUNT           = 0x1
