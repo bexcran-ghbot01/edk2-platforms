@@ -48,7 +48,7 @@
   #                              // significantly impact boot performance
   #  DEBUG_ERROR     0x80000000  // Error
   DEFINE DEBUG_PRINT_ERROR_LEVEL = 0x8000004F
-  DEFINE FIRMWARE_VER            = 2.04.100.07
+  DEFINE FIRMWARE_VER            = 2024.01.01-01
   DEFINE SECURE_BOOT_ENABLE      = TRUE
   DEFINE TPM2_ENABLE             = TRUE
   DEFINE INCLUDE_TFTP_COMMAND    = TRUE
