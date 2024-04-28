@@ -172,6 +172,8 @@
   #
   gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[0]|{ 0xFF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xFF }       # Require if no fully structure used
 
+  gAmpereTokenSpaceGuid.PcdSmbusI2cBusSpeed|400000
+
 !ifdef $(FIRMWARE_VER)
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"$(FIRMWARE_VER)"
 !endif
