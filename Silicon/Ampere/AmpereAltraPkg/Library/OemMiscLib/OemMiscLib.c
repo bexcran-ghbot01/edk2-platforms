@@ -134,12 +134,20 @@ OemGetProcessorInformation (
 {
   if (!OemIsProcessorPresent (ProcessorIndex)) {
     ProcessorStatus->Data = 0;
-    return FALSE;
+    return TRUE;
   }
 
   /* Processor Status */
   ProcessorStatus->Bits.SocketPopulated = OemIsProcessorPresent (ProcessorIndex);
-  ProcessorStatus->Bits.CpuStatus       = IsCpuEnabled (ProcessorIndex);
+  if (ProcessorIndex == 0) {
+    ProcessorStatus->Bits.CpuStatus = 1;
+  } else {
+    if (IsSlaveSocketActive()) {
+      ProcessorStatus->Bits.CpuStatus = 1;
+    } else {
+     ProcessorStatus->Bits.CpuStatus = 0;
+    }
+  }
 
   /* Processor Charateristics */
   ProcessorCharacteristics->ProcessorReserved1              = 0;
