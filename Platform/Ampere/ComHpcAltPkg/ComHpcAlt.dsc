@@ -254,8 +254,8 @@
   }
   Platform/Ampere/JadePkg/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
   Silicon/Ampere/AmpereAltraPkg/AcpiCommonTables/AcpiCommonTables.inf
-  Platform/Ampere/ComHpcAltPkg/AcpiTables/AcpiTables.inf
-  Platform/Ampere/JadePkg/Ac02AcpiTables/Ac02AcpiTables.inf
+  Platform/Ampere/ComHpcAltPkg/Ac01AcpiTables/Ac01AcpiTables.inf
+  Platform/Ampere/ComHpcAltPkg/Ac02AcpiTables/Ac02AcpiTables.inf
 
   #
   # PCIe
