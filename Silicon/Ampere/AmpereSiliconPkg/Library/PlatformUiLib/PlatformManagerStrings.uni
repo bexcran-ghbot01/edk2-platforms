@@ -8,8 +8,8 @@
 
 #langdef   en-US "English"
 
-#string STR_EDKII_MENU_TITLE           #language en-US  "Platform Manager"
-#string STR_EDKII_MENU_HELP            #language en-US  "This selection will take you to the Platform Manager"
+#string STR_EDKII_MENU_TITLE           #language en-US  "Platform Configuration"
+#string STR_EDKII_MENU_HELP            #language en-US  "This selection will take you to the Platform Configuration"
 #string STR_PLATFORM_LIST              #language en-US  "Platform Configuration"
 #string STR_MISSING_STRING             #language en-US  "Missing String"
 #string STR_EMPTY_STRING               #language en-US  ""
