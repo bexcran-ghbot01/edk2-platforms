@@ -314,7 +314,7 @@
 
   !if $(NETWORK_ENABLE) == TRUE
     # Intel I210
-    IntelUndiBin/GigUndiBinDebug.inf
+    IntelUndiBin/GigUndiBinRelease.inf
     # For the Redfish USB CDC connection to the BMC
     MdeModulePkg/Bus/Usb/UsbNetwork/UsbCdcEcm/UsbCdcEcm.inf
   !endif

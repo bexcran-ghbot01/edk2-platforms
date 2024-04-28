@@ -337,7 +337,7 @@ APRIORI DXE {
 
   !if $(NETWORK_ENABLE) == TRUE
     # Intel I210
-    INF IntelUndiBin/GigUndiBinDebug.inf
+    INF IntelUndiBin/GigUndiBinRelease.inf
     INF MdeModulePkg/Bus/Usb/UsbNetwork/UsbCdcEcm/UsbCdcEcm.inf
   !endif
 
