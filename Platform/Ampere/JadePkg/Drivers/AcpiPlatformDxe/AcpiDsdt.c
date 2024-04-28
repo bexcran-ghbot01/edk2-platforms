@@ -163,6 +163,11 @@ AcpiPatchNvdimm (
       }
     }
   }
+
+  if (!IsSlaveSocketActive()) {
+    return;
+  }
+
   /* Update NVDIMM Device _STA and OpRegions for SK1 */
   if (NvdRegionNumSK1 == 0) {
     /* Use NVD1 OpRegion base for NVD3 */
