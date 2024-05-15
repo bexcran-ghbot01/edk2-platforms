@@ -288,8 +288,20 @@ CpuConfigExtractConfig (
   PrivateData = CPU_CONFIG_PRIVATE_FROM_THIS (This);
   HiiConfigRouting = PrivateData->HiiConfigRouting;
 
+  BufferSize = sizeof (CPU_VARSTORE_DATA);
+  Status = gRT->GetVariable (
+                  CPU_CONFIG_VARIABLE_NAME,
+                  &gCpuConfigFormSetGuid,
+                  NULL,
+                  &BufferSize,
+                  &PrivateData->Configuration
+                  );
+  if (EFI_ERROR (Status)) {
+    return EFI_NOT_FOUND;
+  }
+
   //
-  // Get current setting from NVParam.
+  // Get other current settings from NVParam.
   //
   Status = CpuNvParamGet (&PrivateData->Configuration);
   if (EFI_ERROR (Status)) {
@@ -397,6 +409,18 @@ CpuConfigRouteConfig (
     return EFI_NOT_FOUND;
   }
 
+  BufferSize = sizeof (CPU_VARSTORE_DATA);
+  Status = gRT->GetVariable (
+                  CPU_CONFIG_VARIABLE_NAME,
+                  &gCpuConfigFormSetGuid,
+                  NULL,
+                  &BufferSize,
+                  &PrivateData->Configuration
+                  );
+  if (EFI_ERROR (Status)) {
+    return EFI_NOT_FOUND;
+  }
+
   //
   // Get configuration data from NVParam
   //
@@ -422,6 +446,17 @@ CpuConfigRouteConfig (
 
   if ((PrivateData->Configuration.NumActiveCores % 2) != 0) {
     return EFI_DEVICE_ERROR;
+  }
+
+  Status = gRT->SetVariable (
+                  CPU_CONFIG_VARIABLE_NAME,
+                  &gCpuConfigFormSetGuid,
+                  EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_NON_VOLATILE,
+                  sizeof (CPU_VARSTORE_DATA),
+                  &PrivateData->Configuration
+                  );
+  if (EFI_ERROR (Status)) {
+    return EFI_NOT_FOUND;
   }
 
   //
@@ -539,7 +574,10 @@ CpuConfigDxeEntryPoint (
   EFI_STATUS                      Status;
   EFI_HII_HANDLE                  HiiHandle;
   EFI_HII_CONFIG_ROUTING_PROTOCOL *HiiConfigRouting;
+  BOOLEAN                         ActionFlag;
   CPU_VARSTORE_DATA               *Configuration;
+  EFI_STRING                      ConfigRequestHdr;
+  UINTN                           BufferSize;
 
   //
   // With the fresh system, the NVParam value is invalid (0xFFFFFFFF).
@@ -617,12 +655,48 @@ CpuConfigDxeEntryPoint (
   ZeroMem (Configuration, sizeof (CPU_VARSTORE_DATA));
 
   //
-  // Get configuration data from NVParam
+  // Try to read NV config EFI variable first
   //
-  Status = CpuNvParamGet (&mPrivateData->Configuration);
+  ConfigRequestHdr = HiiConstructConfigHdr (&gCpuConfigFormSetGuid, CPU_CONFIG_VARIABLE_NAME, mDriverHandle);
+  ASSERT (ConfigRequestHdr != NULL);
+
+  BufferSize = sizeof (CPU_VARSTORE_DATA);
+  Status = gRT->GetVariable (CPU_CONFIG_VARIABLE_NAME, &gCpuConfigFormSetGuid, NULL, &BufferSize, Configuration);
   if (EFI_ERROR (Status)) {
-    return Status;
+    //
+    // Store zero data Buffer Storage to EFI variable
+    //
+    Status = gRT->SetVariable (
+                    CPU_CONFIG_VARIABLE_NAME,
+                    &gCpuConfigFormSetGuid,
+                    EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_NON_VOLATILE,
+                    sizeof (CPU_VARSTORE_DATA),
+                    Configuration
+                    );
+    if (EFI_ERROR (Status)) {
+      CpuConfigUnload ();
+      return Status;
+    }
+    //
+    // EFI variable for NV config doesn't exit, we should build this variable
+    // based on default values stored in IFR
+    //
+    ActionFlag = HiiSetToDefaults (ConfigRequestHdr, EFI_HII_DEFAULT_CLASS_STANDARD);
+    if (!ActionFlag) {
+      CpuConfigUnload ();
+      return EFI_INVALID_PARAMETER;
+    }
+  } else {
+    //
+    // EFI variable does exist and Validate Current Setting
+    //
+    ActionFlag = HiiValidateSettings (ConfigRequestHdr);
+    if (!ActionFlag) {
+      CpuConfigUnload ();
+      return EFI_INVALID_PARAMETER;
+    }
   }
+  FreePool (ConfigRequestHdr);
 
   //
   // Limit SLC as L3$ to only 1P monolithic mode
@@ -632,6 +706,17 @@ CpuConfigDxeEntryPoint (
   } else {
     Configuration->CpuSlcAsL3Permitted = CPU_SLC_AS_L3_PERMITTED_NO;
     Configuration->CpuSlcAsL3 = CPU_SLC_AS_L3_DISABLE;
+  }
+
+  Status = gRT->SetVariable (
+                  CPU_CONFIG_VARIABLE_NAME,
+                  &gCpuConfigFormSetGuid,
+                  EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_NON_VOLATILE,
+                  sizeof (CPU_VARSTORE_DATA),
+                  Configuration
+                  );
+  if (EFI_ERROR (Status)) {
+    return EFI_NOT_FOUND;
   }
 
   return EFI_SUCCESS;
