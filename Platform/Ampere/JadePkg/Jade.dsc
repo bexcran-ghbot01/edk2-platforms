@@ -106,6 +106,8 @@
   #
   BoardPcieLib|Platform/Ampere/JadePkg/Library/BoardPcieLib/BoardPcieLib.inf
 
+  OemMiscLib|Silicon/Ampere/AmpereAltraPkg/Library/OemMiscLib/OemMiscLib.inf
+
   #
   # EFI Redfish drivers
   #

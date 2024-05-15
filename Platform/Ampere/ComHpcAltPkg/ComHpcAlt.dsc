@@ -106,6 +106,8 @@
   AcpiLib|EmbeddedPkg/Library/AcpiLib/AcpiLib.inf
   AcpiHelperLib|Platform/Ampere/AmperePlatformPkg/Library/AcpiHelperLib/AcpiHelperLib.inf
 
+  OemMiscLib|Platform/Ampere/ComHpcAltPkg/Library/OemMiscLib/OemMiscLib.inf
+
   #
   # EFI Redfish drivers
   #
