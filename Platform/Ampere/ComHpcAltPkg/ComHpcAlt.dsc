@@ -197,6 +197,8 @@
   # point only, for entry point versions >= 3.0.
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosEntryPointProvideMethod|0x2
 
+  gAmpereTokenSpaceGuid.PcdIpmiSsifResponseRetryCount|10
+
   gAmpereTokenSpaceGuid.PcdPlatformNumProcessorSockets|1
 
   #
