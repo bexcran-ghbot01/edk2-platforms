@@ -6,10 +6,10 @@
 
 **/
 
-DefinitionBlock("Dsdt.aml", "DSDT", 0x02, "ADLINK", "Altra", 1) {
+DefinitionBlock("Dsdt.aml", "DSDT", 0x02, "ADLINK", "AADP", 1) {
   //
   // Board Model
-  Name(\BDMD, "Altra AADP Board")
+  Name(\BDMD, "AADP Board")
   Name(TPMF, 0)  // TPM presence
   Name(AERF, 0)  // PCIe AER Firmware-First
 
