@@ -65,13 +65,8 @@ CheckSlcCache (
                   &CpuConfigData
                   );
 
-  DEBUG ((DEBUG_INFO, "%a\n", __func__));
-
-  DEBUG ((DEBUG_INFO, "Sizeof (CpuConfigData) = %d\n", sizeof (CpuConfigData)));
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Can not get CPU configuration information - %r\n", __FUNCTION__, Status));
-
-    DEBUG ((DEBUG_INFO, "Passed in %d, needed %d\n", sizeof (CPU_VARSTORE_DATA), CpuConfigDataSize));
 
     Status = NVParamGet (
                NV_SI_SUBNUMA_MODE,
@@ -87,7 +82,6 @@ CheckSlcCache (
       return TRUE;
     }
   } else if (CpuConfigData.CpuSlcAsL3 == CPU_SLC_AS_L3_ENABLE) {
-	  CpuDeadLoop ();
     return TRUE;
   }
 
