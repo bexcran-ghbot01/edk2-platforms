@@ -18,7 +18,7 @@
   DSC_SPECIFICATION              = 0x0001001B
   OUTPUT_DIRECTORY               = Build/ComHpcAlt
   SUPPORTED_ARCHITECTURES        = AARCH64
-  BUILD_TARGETS                  = DEBUG|RELEASE
+  BUILD_TARGETS                  = DEBUG|RELEASE|NOOPT
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = Platform/Ampere/ComHpcAltPkg/ComHpcAltCapsule.fdf
 
