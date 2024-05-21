@@ -61,7 +61,7 @@ typedef struct {
 
 #pragma pack()
 
-TPM2_ACPI_TABLE_ARM_SMC mTpm2AcpiTtable = {
+TPM2_ACPI_TABLE_ARM_SMC mTpm2AcpiTable = {
   __ACPI_HEADER (
     EFI_ACPI_6_3_TRUSTED_COMPUTING_PLATFORM_2_TABLE_SIGNATURE,
     TPM2_ACPI_TABLE_ARM_SMC,
@@ -416,39 +416,39 @@ PublishTpm2 (
     EV_POST_CODE,
     EV_POSTCODE_INFO_ACPI_DATA,
     ACPI_DATA_LEN,
-    &mTpm2AcpiTtable,
-    mTpm2AcpiTtable.Header.Length
+    &mTpm2AcpiTable,
+    mTpm2AcpiTable.Header.Length
     );
 
-  mTpm2AcpiTtable.Header.Revision = PcdGet8 (PcdTpm2AcpiTableRev);
-  DEBUG ((DEBUG_INFO, "Tpm2 ACPI table revision is %d\n", mTpm2AcpiTtable.Header.Revision));
+  mTpm2AcpiTable.Header.Revision = PcdGet8 (PcdTpm2AcpiTableRev);
+  DEBUG ((DEBUG_INFO, "Tpm2 ACPI table revision is %d\n", mTpm2AcpiTable.Header.Revision));
 
   //
   // PlatformClass is only valid for version 4 and above
   //    BIT0~15:  PlatformClass
   //    BIT16~31: Reserved
   //
-  if (mTpm2AcpiTtable.Header.Revision >= EFI_TPM2_ACPI_TABLE_REVISION_4) {
-    mTpm2AcpiTtable.Flags = (mTpm2AcpiTtable.Flags & 0xFFFF0000) | PcdGet8 (PcdTpmPlatformClass);
-    DEBUG ((DEBUG_INFO, "Tpm2 ACPI table PlatformClass is %d\n", (mTpm2AcpiTtable.Flags & 0x0000FFFF)));
+  if (mTpm2AcpiTable.Header.Revision >= EFI_TPM2_ACPI_TABLE_REVISION_4) {
+    mTpm2AcpiTable.Flags = (mTpm2AcpiTable.Flags & 0xFFFF0000) | PcdGet8 (PcdTpmPlatformClass);
+    DEBUG ((DEBUG_INFO, "Tpm2 ACPI table PlatformClass is %d\n", (mTpm2AcpiTable.Flags & 0x0000FFFF)));
   }
 
-  mTpm2AcpiTtable.Laml = PcdGet32 (PcdTpm2AcpiTableLaml);
-  mTpm2AcpiTtable.Lasa = PcdGet64 (PcdTpm2AcpiTableLasa);
-  if ((mTpm2AcpiTtable.Header.Revision < EFI_TPM2_ACPI_TABLE_REVISION_4) ||
-      (mTpm2AcpiTtable.Laml == 0) || (mTpm2AcpiTtable.Lasa == 0))
+  mTpm2AcpiTable.Laml = PcdGet32 (PcdTpm2AcpiTableLaml);
+  mTpm2AcpiTable.Lasa = PcdGet64 (PcdTpm2AcpiTableLasa);
+  if ((mTpm2AcpiTable.Header.Revision < EFI_TPM2_ACPI_TABLE_REVISION_4) ||
+      (mTpm2AcpiTable.Laml == 0) || (mTpm2AcpiTable.Lasa == 0))
   {
     //
     // If version is smaller than 4 or Laml/Lasa is not valid, rollback to original Length.
     //
-    mTpm2AcpiTtable.Header.Length = sizeof (EFI_TPM2_ACPI_TABLE);
+    mTpm2AcpiTable.Header.Length = sizeof (EFI_TPM2_ACPI_TABLE);
   }
-  mTpm2AcpiTtable.Header.Length = sizeof (TPM2_ACPI_TABLE_ARM_SMC);
+  mTpm2AcpiTable.Header.Length = sizeof (TPM2_ACPI_TABLE_ARM_SMC);
 
-  mTpm2AcpiTtable.AddressOfControlArea = mPlatformTpm2InterfaceParams.AddressOfControlArea;
-  mTpm2AcpiTtable.PlatformSpecificParameters.Interrupt = mPlatformTpm2InterfaceParams.InterruptMode;
-  mTpm2AcpiTtable.PlatformSpecificParameters.Flags = 0;
-  mTpm2AcpiTtable.PlatformSpecificParameters.SmcFunctionId = mPlatformTpm2InterfaceParams.SmcFunctionId;
+  mTpm2AcpiTable.AddressOfControlArea = mPlatformTpm2InterfaceParams.AddressOfControlArea;
+  mTpm2AcpiTable.PlatformSpecificParameters.Interrupt = mPlatformTpm2InterfaceParams.InterruptMode;
+  mTpm2AcpiTable.PlatformSpecificParameters.Flags = 0;
+  mTpm2AcpiTable.PlatformSpecificParameters.SmcFunctionId = mPlatformTpm2InterfaceParams.SmcFunctionId;
 
   //
   // Construct ACPI table
@@ -458,8 +458,8 @@ PublishTpm2 (
 
   Status = AcpiTable->InstallAcpiTable (
                         AcpiTable,
-                        &mTpm2AcpiTtable,
-                        mTpm2AcpiTtable.Header.Length,
+                        &mTpm2AcpiTable,
+                        mTpm2AcpiTable.Header.Length,
                         &TableKey
                         );
   ASSERT_EFI_ERROR (Status);
