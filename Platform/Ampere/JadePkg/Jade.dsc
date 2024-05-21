@@ -260,6 +260,11 @@
   gAmpereTokenSpaceGuid.PcdRedfishServiceStopIfSecureBootDisabled|FALSE
 !endif
 
+!if $(TPM2_ENABLE) == TRUE
+  # Configure the TPM2 ACPI table to specify a Server Platform Class
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmPlatformClass|1
+!endif
+
 [PcdsDynamicDefault.common.DEFAULT]
 
 [PcdsDynamicExDefault.common.DEFAULT]
