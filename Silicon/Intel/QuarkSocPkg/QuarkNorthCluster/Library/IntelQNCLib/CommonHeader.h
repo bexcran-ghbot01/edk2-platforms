@@ -8,8 +8,8 @@ Copyright (c) 2013-2015 Intel Corporation.
 SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
-#ifndef __COMMON_HEADER_H_
-#define __COMMON_HEADER_H_
+#ifndef COMMON_HEADER_H_
+#define COMMON_HEADER_H_
 
 
 
