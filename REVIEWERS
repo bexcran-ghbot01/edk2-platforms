@@ -45,7 +45,7 @@
 /Platform/Intel/Tools/** @YuweiChen1110
 
 /Silicon/Intel/IntelSiliconPkg/** @AshrafAliS
-/Silicon/Intel/QuarkSocPkg/** @nate-desimone
+/Silicon/Intel/QuarkSocPkg/** @nate-desimone @bexcran-ghbot01
 /Silicon/Intel/Vlv2DeviceRefCodePkg/** @nate-desimone
 
 # Add Heng Luo
